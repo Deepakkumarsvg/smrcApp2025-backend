@@ -33,7 +33,7 @@ const fetchAllActivity = async (req, res, next) => {
 
     // Fetch all data when no query is provided
     data = await collection.find({
-			// startTime: { $gte: epochNow}
+			startTime: { $gte: epochNow}
 		}).toArray();
 
     return sendResponse(res, 201, true, messages.DATA_FETCHED_SUCCESSFULLY, data);
