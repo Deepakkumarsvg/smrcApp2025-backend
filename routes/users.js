@@ -1,10 +1,11 @@
 
 import express from "express";
+import doctorCtrl from "../controllers/doctors.js"
 const userRoutes = express.Router();
 
 /* GET users listing. */
-userRoutes.get('/check-api', function(req, res, next) {
-  res.send('respond with a resource');
+userRoutes.get('/check-api', async (req, res, next) => {
+  doctorCtrl.testCollection(req, res, next)
 });
 
 export default userRoutes;

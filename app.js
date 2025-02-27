@@ -4,8 +4,11 @@ import cron from 'node-cron';
 import pkg from "body-parser";
 import cors from "cors";
 import { createServer } from 'http';
-import indexRouter from './routes/index.js'
-import userRoutes from './routes/users.js'
+import indexRouter from './routes/index.js';
+import userRoutes from './routes/users.js';
+import activityRoutes from './routes/activity.js';
+import { getActiveActivity } from "./services/getActiveActivity.js";
+import { notFoundHandler, globalHandler } from "./middlewares/errorHandler.js";
 
 dotenv.config();
 
@@ -20,6 +23,7 @@ app.use(express.urlencoded({limit: '2mb', extended: true }));
 
 app.use('/', indexRouter);
 app.use('/users', userRoutes);
+app.use('/activity', activityRoutes)
 
 const server = createServer(app);
 
@@ -29,6 +33,18 @@ app.get("/ping", (req, res) => {
     message: "Node Application Is started",
   });
 });
+
+cron.schedule('*/2 * * * *', async (req, res, next) => {
+  try {
+    getActiveActivity(req, res, next);
+  } catch (error) {
+    console.log('multi task error', error);
+  }
+});
+
+app.use(notFoundHandler);
+
+app.use(globalHandler);
 
 server.listen(PORT, () => {
   console.log(`Socket server running on port ${PORT}`);
