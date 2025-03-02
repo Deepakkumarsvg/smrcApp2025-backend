@@ -42,6 +42,14 @@ const fetchAllActivity = async (req, res, next) => {
       })
       .toArray();
 
+    for(let ele of data) {
+      if(ele.startTime > epochNow) {
+        ele.status = "Upcoming";
+      }else {
+        ele.status = "Live";
+      }
+    }
+
     return sendResponse(
       res,
       201,
