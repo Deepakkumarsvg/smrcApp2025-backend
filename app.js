@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
 import express from "express";
-import cron from 'node-cron';
+import cron from "node-cron";
 import pkg from "body-parser";
 import cors from "cors";
-import { createServer } from 'http';
-import indexRouter from './routes/index.js';
-import userRoutes from './routes/users.js';
-import activityRoutes from './routes/activity.js';
+import { createServer } from "http";
+import indexRouter from "./routes/index.js";
+import userRoutes from "./routes/users.js";
+import activityRoutes from "./routes/activity.js";
 import { getActiveActivity } from "./services/getActiveActivity.js";
 import { notFoundHandler, globalHandler } from "./middlewares/errorHandler.js";
 
@@ -15,15 +15,15 @@ dotenv.config();
 const { json } = pkg;
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.urlencoded({limit: '2mb', extended: true }));
+app.use(express.urlencoded({ limit: "2mb", extended: true }));
 
-app.use('/', indexRouter);
-app.use('/users', userRoutes);
-app.use('/activity', activityRoutes)
+// CHECKS ENDPOINT
+app.use("/", indexRouter);
+app.use("/users", userRoutes);
+app.use("/activity", activityRoutes);
 
 const server = createServer(app);
 
@@ -34,11 +34,11 @@ app.get("/ping", (req, res) => {
   });
 });
 
-cron.schedule('*/2 * * * *', async (req, res, next) => {
+cron.schedule("*/2 * * * *", async (req, res, next) => {
   try {
     getActiveActivity(req, res, next);
   } catch (error) {
-    console.log('multi task error', error);
+    console.log("multi task error", error);
   }
 });
 
