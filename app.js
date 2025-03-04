@@ -34,14 +34,6 @@ app.get("/ping", (req, res) => {
   });
 });
 
-cron.schedule("*/2 * * * *", async (req, res, next) => {
-  try {
-    getActiveActivity(req, res, next);
-  } catch (error) {
-    console.log("multi task error", error);
-  }
-});
-
 app.use(notFoundHandler);
 
 app.use(globalHandler);
