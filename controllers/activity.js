@@ -40,12 +40,13 @@ const fetchAllActivity = async (req, res, next) => {
       .find({
         endTime: { $gt: epochNow },
       })
+      .sort({ startTime: 1 })
       .toArray();
 
-    for(let ele of data) {
-      if(ele.startTime > epochNow) {
+    for (let ele of data) {
+      if (ele.startTime > epochNow) {
         ele.status = "Upcoming";
-      }else {
+      } else {
         ele.status = "Live";
       }
     }
