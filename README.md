@@ -5,3 +5,6 @@ STEP :
 1.  git pull origin master
 2.  npm i
 3.  npm run start-dev
+
+FOR DEPLOYMENT 
+.env file is required
